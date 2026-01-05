@@ -44,6 +44,17 @@ def get_train_test_split(df, test_size=0.2):
     
     return train, test
 
+def get_movie_titles():
+    # Le fichier u.item utilise l'encodage latin-1
+    path = "data/ml-100k/u.item"
+    titles = {}
+    with open(path, 'r', encoding='latin-1') as f:
+        for line in f:
+            fields = line.split('|')
+            # ID - 1 pour correspondre à notre indexation 0
+            titles[int(fields[0]) - 1] = fields[1]
+    return titles
+
 if __name__ == "__main__":
     if not os.path.exists("data"):
         os.makedirs("data")
