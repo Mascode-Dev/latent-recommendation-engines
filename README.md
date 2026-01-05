@@ -15,13 +15,13 @@ PMF models user-item interactions as a dot product within a -dimensional latent 
 - The observed rating follows a normal distribution centered on the product of latent vectors:
 
 <p align="center">
-  <img src="assets/pmf_value.png" width="600">
+  <img src="assets/pmf_value.png" width="200">
 </p>
 
 - To prevent overfitting, I setup a L2-regularization with the objective to minimize this cost function : 
 
 <p align="center">
-  <img src="assets/reg.png" width="600">
+  <img src="assets/reg.png" width="500">
 </p>
 
 ---
