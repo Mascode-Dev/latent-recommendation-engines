@@ -85,7 +85,7 @@ By maximizing this function, we are minimizing the Loss function which is $LOSS_
 
 Let's talk about the **Reparameterization Trick**.\
 This trick allows the backpropagation through the stochastic sample of $z$.
-$z$ is now expressed as a deterministic function of the model parameters and an external noise variable $\epsilon$.\
+$z$ is now expressed as a deterministic function of the model parameters and an external noise variable $\epsilon$.
 
 <p align="center">
   <img src="assets/reparam.png" width="500">
@@ -97,7 +97,7 @@ The backpropagation is can flow back from the decoder to the encoder.
 
 ## Part II: Implementation and results
 
-1) Experimental setup\
+1) Experimental setup
 - For this study I used the *[MovieLens 100k](https://grouplens.org/datasets/movielens/100k/)* dataset, it contains 100K reviews from 943 users on 1682 movies.
 - Data Split : 80/20 train-test split
 For the RBM and VAE, the feedback was binarized, ratings $\geq$ 4 are considered as a positive preference (1) and ratings < 4 are considered as a negative preference (0).
@@ -124,6 +124,8 @@ The models are evaluated using **Recall@10**, which measure the percentage of it
 This project successfully demonstrates the evolution of recommendation systems. \
 While PMF provides a strong and interpretable baseline, RBMs introduce the power of stochastic feature learning.\
 However, the Variational Auto-Encoder represents the current pinnacle for this task, offering a robust, continuous latent manifold that handles data sparsity more effectively through variational inference.
+
+---
 
 *I am passionate about building intelligent systems that bridge the gap between complex mathematical theory and real-world applications*.\
 *Feel free to reach me out if you want to discuss about it.*\
