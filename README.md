@@ -33,7 +33,7 @@ The RBM is a stochastic neural nertwoks composed of two layers :
 - Visible layer ($v$) : Items ratings (movies in the case of a recommendation algorithm)
 - Hidden layer ($h$) : Latent characteristics
 The **restricted** term in RBM means that there is no links between two neurons of the same layer.
-This model is stochastic because each neuron will take a decision (0 or 1) according to a **probability**.
+This model is stochastic because each neuron's state (0 or 1) is sampled according to a **logistic probability**.
 
 <p align="center">
   <img src="assets/rbm.png" width="500">
@@ -67,16 +67,67 @@ The VAE is an evolution of traditionnal encoder, instead of just compress the in
 A traditionnal encoder would have determine a precise category for the user despite the small sample.\
 A VAE is expressing a uncertainty, smaller is our dataset, bigger the variance $\sigma$ will be. The user will be locate in a *zone* instead of a precise single point.
 
-To maximize the probability of our data, we want to maximize the ELBO (Evidence Lower Bound) function.
+To maximize the **Marginal Likelihood**, we want to maximize the ELBO (Evidence Lower Bound) function.
 
 <p align="center">
   <img src="assets/ELBO.png" width="500">
 </p>
 
 This function is divided into 2 parts : 
-- The Log-Likelihood (the capacity of the encoder to re-create $x$ from $z$)
-- The KL-Divergence (A distance metrics between the encoder's produced distribution and a reference distribution (most likely $\mathcal{N}(0,1)$ ).
+- The Log-Likelihood (the capacity 
+of the encoder to re-create $x$ from $z$)
+It pushes the model to represent the user's specific movie tastes as accuracy as possible.
+
+- The KL-Divergence (A distance metrics between the encoder's produced distribution and a reference distribution (most likely $\mathcal{N}(0,1)$ )).
+Actes a "spring" that pulls the latent distribution toward a standard normal $\mathcal{N}(0,1)$.
 
 By maximizing this function, we are minimizing the Loss function which is $LOSS_{VAE} = - ELBO$.
+
+Let's talk about the **Reparameterization Trick**.\
+This trick allows the backpropagation through the stochastic sample of $z$.
+$z$ is now expressed as a deterministic function of the model parameters and an external noise variable $\epsilon$.\
+
+<p align="center">
+  <img src="assets/reparam.png" width="500">
+</p>
+
+The backpropagation is can flow back from the decoder to the encoder.
+
+---
+
+## Part II: Implementation and results
+
+1) Experimental setup\
+- For this study I used the *[MovieLens 100k](https://grouplens.org/datasets/movielens/100k/)* dataset, it contains 100K reviews from 943 users on 1682 movies.
+- Data Split : 80/20 train-test split
+For the RBM and VAE, the feedback was binarized, ratings $\geq$ 4 are considered as a positive preference (1) and ratings < 4 are considered as a negative preference (0).
+
+2) Training convergence\
+Each model is trained on 20 epochs.
+
+**PMF (RMSE)**: The Root Mean Square Error decreased steadily, reaching a baseline of ~0.8286. This indicates that the model learned a solid linear approximation of user tastes.
+
+**VAE (ELBO)**: The loss (negative ELBO) showed a sharp initial drop. This reflects the model quickly organizing the latent space to capture the global popularity of items before refining individual user distributions.
+
+3) Quantitative comparison
+
+The models are evaluated using **Recall@10**, which measure the percentage of items the user actually liked in the test set that appeared in the top 10 recommendation.
+
+<p align="center">
+  <img src="model_comparison_recall.png" width="700">
+</p>
+
+*Analysis*: The VAE significantly outperformed the PMF. This is attributed to the non-linear activation functions (ReLU) and the probabilistic bottleneck, which allows for better generalization on sparse data compared to the rigid linear projections of PMF.
+
+## Conclusion
+
+This project successfully demonstrates the evolution of recommendation systems. \
+While PMF provides a strong and interpretable baseline, RBMs introduce the power of stochastic feature learning.\
+However, the Variational Auto-Encoder represents the current pinnacle for this task, offering a robust, continuous latent manifold that handles data sparsity more effectively through variational inference.
+
+*I am passionate about building intelligent systems that bridge the gap between complex mathematical theory and real-world applications*.\
+*Feel free to reach me out if you want to discuss about it.*\
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/thomas-jego/)
+[![mail](https://img.shields.io/badge/-Proton%20Mail-6D4AFF?style=flat-square&logo=protonmail&logoColor=white)](mailto:thomas.jego@protonmail.com)
 
 ---
