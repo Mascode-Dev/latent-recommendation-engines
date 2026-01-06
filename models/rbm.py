@@ -17,14 +17,22 @@ class RBM:
         return 1 / (1 + np.exp(-x))
 
     def sample_h(self, v):
-        """Sampling the hidden layer given the visible layer P(h|v)"""
+        """
+        Sampling the hidden layer given the visible layer P(h|v)
+        v: Matrix (batch_size x n_visible)
+        Returns the probabilities and sampled activations of the hidden layer.
+        """
         prob_h = self.sigmoid(np.dot(v, self.W) + self.b)
         
         # Bernoulli sampling to determine if the neuron activates
         return prob_h, np.random.binomial(1, prob_h)
 
     def sample_v(self, h):
-        """Sampling the visible layer given the hidden layer P(v|h)"""
+        """
+        Sampling the visible layer given the hidden layer P(v|h)
+        h: Matrix (batch_size x n_hidden)
+        Returns the probabilities and sampled activations of the visible layer.
+        """
         prob_v = self.sigmoid(np.dot(h, self.W.T) + self.a)
         return prob_v, np.random.binomial(1, prob_v)
 
